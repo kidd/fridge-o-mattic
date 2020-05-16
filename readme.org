@@ -1,0 +1,3 @@
+* fridge-o-matic
+** open door
+** countdown
