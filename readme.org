@@ -1,3 +1,15 @@
-* fridge-o-matic
+* fridge-o-mattic
+
+** Parts:
+   - arduino uno
+   - 2 leds
+   - buzzer?
+   - lcd screen
+   - a fridge
+   - MAGNETS! (of course, the secret sauce)
 ** open door
 ** countdown
+
+** Development
+   I finally got to develop inside emacs. arduino-mode, and adding
+   your use into dialup group should do it.
