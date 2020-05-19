@@ -14,8 +14,21 @@
    I finally got to develop inside emacs. arduino-mode, and adding
    your use into dialup group should do it.
 
-** Links and refs
 
+   - 00..10 => beep immediately.
+   - 10..... => set chrono at (cm-10) minutes.
+
+   The problem is to store the flags so that a chrono is not set while
+   running a countdown, or set again when it finishes at wtv distance the
+   marker is.
+
+   A lot of flags int the code that show I don't know what I'm
+   doing. This looks like it should be an FSM, because that's what
+   those things are. Or use Ferret.
+
+** Links, refs, and future work
    - https://programmingtoddler.wordpress.com/2014/11/09/c-how-to-get-system-timestamp-in-second-millisecond-and-microsecond/
    - https://www.instructables.com/class/LEDs-and-Lighting-Class/
    - https://codeforwin.org/2018/07/how-to-declare-initialize-and-access-structures-in-c.html
+   - https://www.arduino.cc/en/Tutorial/BlinkWithoutDelay
+   - https://www.sistemasorp.es/2014/11/11/programando-un-arduino-remotamente-con-el-modulo-esp8266/
