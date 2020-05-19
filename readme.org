@@ -13,3 +13,9 @@
 ** Development
    I finally got to develop inside emacs. arduino-mode, and adding
    your use into dialup group should do it.
+
+** Links and refs
+
+   - https://programmingtoddler.wordpress.com/2014/11/09/c-how-to-get-system-timestamp-in-second-millisecond-and-microsecond/
+   - https://www.instructables.com/class/LEDs-and-Lighting-Class/
+   - https://codeforwin.org/2018/07/how-to-declare-initialize-and-access-structures-in-c.html
