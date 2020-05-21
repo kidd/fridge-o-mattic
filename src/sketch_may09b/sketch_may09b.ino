@@ -37,6 +37,8 @@ int sameish(int a, int b){
 
 void quick_flash() {
   digitalWrite(ALARM_SET_PIN, HIGH);
+  set_base(100000);
+  last_fixed_timestamp = 10000000000;
 }
 
 unsigned long time_deadline = 0;
@@ -57,10 +59,11 @@ void update_flags(int cm) {
     time_deadline = 0;
   } else if ((time_deadline != 0) && (time_deadline > now)) {
     /* alarm set, not there yet */
-  } else if (sameish(cm, cm_deadline)) {
+  } else if (sameish(cm, cm_deadline) || (cm == 0) ) {
     /* not moved since last chrono. don't do shit. */
   } else if (sameish(base, cm) && (now > last_fixed_timestamp + 5000) ) {
-    Serial.println("chronolights!");
+    Serial.print("chrono set to ");
+    Serial.println(cm);
     set_chrono(cm);
   } else if (sameish(base, cm)) {
     Serial.println(".....steady....");
@@ -72,7 +75,8 @@ void update_flags(int cm) {
   }
 }
 
-void loop() {                   /* This could be a pointer to have a stm! */
+/* This could be a pointer to have a stm! */
+void loop() {
   delay(500);                    /* This could be a var */
   now = millis();
   int cm=sonar.ping_cm();
@@ -88,7 +92,7 @@ void loop() {                   /* This could be a pointer to have a stm! */
     digitalWrite(LED_PIN, HIGH);
   } else {
     digitalWrite(LED_PIN, LOW);
+    update_flags(cm);
   }
 
-  update_flags(cm);
 }
