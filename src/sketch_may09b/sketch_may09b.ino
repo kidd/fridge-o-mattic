@@ -38,7 +38,7 @@ int sameish(int a, int b){
 void quick_flash() {
   digitalWrite(ALARM_SET_PIN, HIGH);
   set_base(100000);
-  last_fixed_timestamp = 10000000000;
+  last_fixed_timestamp = 0;
 }
 
 unsigned long time_deadline = 0;
@@ -66,7 +66,7 @@ void update_flags(int cm) {
     /* alarm set, not there yet */
   } else if (sameish(cm, cm_deadline) || (cm == 0) ) {
     /* not moved since last chrono. don't do shit. */
-  } else if (sameish(base, cm) && (now > last_fixed_timestamp + 5000) ) {
+  } else if (sameish(base, cm) && (now > last_fixed_timestamp + 5000) && (last_fixed_timestamp != 0) ) {
     Serial.print("chrono set to ");
     Serial.println(cm);
     set_chrono(cm);
