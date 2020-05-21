@@ -45,10 +45,15 @@ unsigned long time_deadline = 0;
 unsigned long cm_deadline = 0;
 
 void set_chrono(int cm) {
-  time_deadline = millis() + ((cm - 10) * 1000 * 10);
+  time_deadline = millis() + (((unsigned long)cm - 10) * 1000 * 60 * 0.5);
   cm_deadline = cm;
   Serial.print("chrono at: ");
   Serial.println(time_deadline);
+  Serial.print("cm: ");
+  Serial.println(cm);
+  Serial.print("time: ");
+  Serial.println(time_deadline);
+
 }
 
 void update_flags(int cm) {
