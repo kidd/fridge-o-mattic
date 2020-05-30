@@ -1,30 +1,98 @@
 * fridge-o-mattic
-
 ** Parts:
    - arduino uno
+   - Ultrasonic Distance Sensor (HC-SR04)
    - 2 leds
    - buzzer?
    - lcd screen
    - a fridge
    - MAGNETS! (of course, the secret sauce)
-** open door
-** countdown
+
+** Story
+   Small hacky project where by installing an arduino with some very
+   basic sensors, you can detect when the fridge's door is left open.
+
+   Maybe you can relate, maybe not, but the fridge at my new place has
+   some issues when closing the door, and sometimes it doesn't close
+   properly (you have to make sure every time it's been properly
+   closed, and not 99% closed)
+
+** is_door_opened?
+   By installing the ultrasonic distance sensor in the frame of the
+   door, we can detect what's the perceived distance by the sensor, and
+   know if the sonar is hitting the door or not. If the sensor detects
+   <10 cm, we say it's hitting the door, so it beeps (or lights the
+   leds, or makes your philips hue go crazy, your choice)...
+
+** Countdown
+   Once this phase was done, next thing was to bloat that thing
+   somehow, and make it "do more".  So in between 10cm and 2mts,
+   there's a big range we could be using to mean different things, so
+   it could have different "modes", or smthing like this. We could
+   indicate that distance with a magnet, aligned to the ultrasonic
+   sensor.
+
+   The current behavior is that the measurements >10cm, the
+   fridge-o-mattic sets a countdown of =cm-10= minutes. The tricky part
+   here is to know where a movement of the measurement is the door
+   opening, is noise, or us, really setting the clock.  The very crude
+   way it is currently working is so that there's a =sameish=
+   comparison for everything, that rules out noise and random spurious
+   measurements. To detect an intentional countdown setting we detect
+   when the magnet moves (always >10cm, because <10 means "door") for
+   some time, and then it keeps steady. When it's steady for 5 secs, we
+   then set the countdown.
+
+   Once the countdown is set, we have a deadline when we know we're
+   going beep (or flash, or launch the missiles).
+
+   The ugly hacks come to set the whole thing without a button, or any
+   extra feedback, because you know, after the alarm rang, you have to
+   be very 'tidy' and clean the deadline variables and preset distances
+   so that fridge-o-mattic doesn't start a new countdown for the same
+   distance as before, or a door detection messing everything up.
+
+   For now, it kinda works. But being C (since uni I haven't written C
+   I think), and being so PITA to update the code, I'm leaving this
+   version like this (for a v0.1 anyway) while I wait for the [[https://github.com/nodemcu/nodemcu-firmware][nodemcu]]
+   to arrive (Hey Lua!).
 
 ** Development
-   I finally got to develop inside emacs. arduino-mode, and adding
-   your use into dialup group should do it.
 
+   As an extra, I got started with arduino programming and well, it was
+   hard for me to get used to the IDE. First of all, it doesn't
+   properly work with ratpoison WM. Java applications used to have
+   those strange issues.  The way to solve it and make the window open
+   correctly was to add the magic line =exec wmname LG3D= in my
+   .ratpoisonrc.  And install =wmname= on your system (thank God it is
+   in the Nixos repo).
 
-   - 00..10 => beep immediately.
-   - 10..... => set chrono at (cm-10) minutes.
+   It was not trivial to know what to do with =/dev/ttyUSB0= not being
+   correctly accessed by my user. In the end it was easy, just add my
+   user to the `dialout` group via =users.users.rgrau.extraGroups=.
 
-   The problem is to store the flags so that a chrono is not set while
-   running a countdown, or set again when it finishes at wtv distance the
-   marker is.
+   Installing libraries was kind of a magic thing, using the IDE
+   interface without knowing much where things lived, or which paths
+   were used.
 
-   A lot of flags int the code that show I don't know what I'm
-   doing. This looks like it should be an FSM, because that's what
-   those things are. Or use Ferret.
+   Monitoring the board using the serial port was ok, but finding out
+   that I had to close the monitor window in order to upload a new
+   version was a no-go.
+
+   Emacs enters the game. Now I was kinda confortable with the other
+   stuff, I went back to check how the f I could use emacs for arduino
+   programming.  And there's the =arduino-mode=, that did most of what
+   I wanted, and although the monitor terminal is a bit crappy, I could
+   hack it around to obvey me and I could finally reupload new code in
+   a much faster way. you can install libs and compile everything from
+   emacs, so great, another point for emacs.
+
+   All in all, a good experience with something that is really working
+   in the real world. Let's see what happens when I Get the nodemcus.
+
+   A lot of flags in the code show I don't know what I'm doing. This
+   looks like it should be an FSM, because that's what those things
+   are.
 
 ** Links, refs, and future work
    - https://programmingtoddler.wordpress.com/2014/11/09/c-how-to-get-system-timestamp-in-second-millisecond-and-microsecond/
