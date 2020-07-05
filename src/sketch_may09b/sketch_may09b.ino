@@ -6,7 +6,7 @@
 #define TRIGGER_PIN  12
 #define ECHO_PIN     11
 #define LED_PIN     2
-#define BUZZ_PIN     4
+#define BUZZ_PIN     2
 #define MAX_DISTANCE 300
 
 #define ALARM_SET_PIN 2
@@ -110,8 +110,11 @@ void loop() {
       beep();
   } else {
     door = 0;
+    digitalWrite(BUZZ_PIN, LOW);
+
 //    digitalWrite(LED_PIN, LOW);
 //    update_flags(cm);
+    
   }
 
 }
