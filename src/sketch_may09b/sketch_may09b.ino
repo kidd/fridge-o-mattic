@@ -6,6 +6,7 @@
 #define TRIGGER_PIN  12
 #define ECHO_PIN     11
 #define LED_PIN     2
+#define BUZZ_PIN     4
 #define MAX_DISTANCE 300
 
 #define ALARM_SET_PIN 2
@@ -27,6 +28,7 @@ void setup() {
  // Serial.begin(115200);
   Serial.begin(9600);
   pinMode(LED_PIN, OUTPUT);
+  pinMode(BUZZ_PIN, OUTPUT);
 }
 
 int sameish(int a, int b){
@@ -37,7 +39,7 @@ int sameish(int a, int b){
 
 void quick_flash() {
   digitalWrite(ALARM_SET_PIN, HIGH);
-  set_base(100000);
+  set_base(1000);
   last_fixed_timestamp = 0;
 }
 
@@ -80,6 +82,12 @@ void update_flags(int cm) {
   }
 }
 
+void beep() {
+  digitalWrite(LED_PIN, HIGH);
+}
+
+unsigned long door=0;
+
 /* This could be a pointer to have a stm! */
 void loop() {
   delay(500);                    /* This could be a var */
@@ -91,13 +99,19 @@ void loop() {
   Serial.println("cm");
   Serial.print("ts:");
   Serial.println(now);
-
+  Serial.print("door:");
+  Serial.println(door);
+  
   if(cm !=0 && cm<10) {
+    //digitalWrite(LED_PIN, HIGH);
+    if (door == 0 ) door = now;
     set_base(cm);
-    digitalWrite(LED_PIN, HIGH);
+    if (door + 5000 < now)
+      beep();
   } else {
-    digitalWrite(LED_PIN, LOW);
-    update_flags(cm);
+    door = 0;
+//    digitalWrite(LED_PIN, LOW);
+//    update_flags(cm);
   }
 
 }
